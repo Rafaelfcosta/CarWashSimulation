@@ -1,7 +1,7 @@
 let infiniteRun = false
 
-const verbose = false;
-const workersAmount = 1;
+let verbose = true;
+let workersAmount = 1;
 
 let speed = 1;
 
@@ -45,7 +45,7 @@ class Washer {
                     }
                 }
             }
-        }, 1);
+        }, 1/10);
     }
 }
 
