@@ -1,11 +1,11 @@
 function run() {
     toggleBtns();
 
-    let arrivedCars = 0;
-    let endTimeInHours = 8;
-    let arrivalTimes = 0;
-    let maxInQueue = 0;
-    let maxEntities = 0;
+    arrivalTimes = 0;
+    arrivedCars = 0;
+    endTimeInHours = 8;
+    maxInQueue = 0;
+    maxEntities = 0;
 
     endTimeInHours = parseInt(document.getElementById("duration").value)
     workersAmount = parseInt(document.getElementById("workersQt").value)
@@ -13,38 +13,10 @@ function run() {
     verbose = document.getElementById("verbose").checked
     infiniteRun = document.getElementById("infinite").checked
 
-    let arrValues = {
-        "expA": parseInt(document.getElementById("aLimExpo").value),
-        "expB": parseInt(document.getElementById("aMeanExpo").value),
-
-        "triA": parseInt(document.getElementById("aATri").value),
-        "triB": parseInt(document.getElementById("aBTri").value),
-        "triC": parseInt(document.getElementById("aCTri").value),
-
-        "meanA": parseInt(document.getElementById("aMeanNormal").value),
-
-        "uniformA": parseInt(document.getElementById("aAUniform").value),
-        "uniformB": parseInt(document.getElementById("aBUniform").value)
-    }
-
-    let servValues = {
-        "expA": parseInt(document.getElementById("sLimExpo").value),
-        "expB": parseInt(document.getElementById("sMeanExpo").value),
-
-        "triA": parseInt(document.getElementById("sATri").value),
-        "triB": parseInt(document.getElementById("sBTri").value),
-        "triC": parseInt(document.getElementById("sCTri").value),
-
-        "meanA": parseInt(document.getElementById("sMeanNormal").value),
-
-        "uniformA": parseInt(document.getElementById("sAUniform").value),
-        "uniformB": parseInt(document.getElementById("sBUniform").value)
-    }
-
     let washer = new Washer();
     washer.queue.setLimit(queueLimit);
 
-    let queueSizes = []
+    let queueSizes = [];
 
     function arriveCars() {
 
@@ -66,12 +38,12 @@ function run() {
 
         let tm = setTimeout(arriveCars, time * speed);
         if (washer.queue.limit === -1) {
-            washer.queue.add(new Car());
+            washer.queue.add(new Car(arrivedCars));
             arrivedCars++;
             log(washer);
         } else {
             if (washer.queue.limit > washer.queue.size()) {
-                washer.queue.add(new Car());
+                washer.queue.add(new Car(arrivedCars));
                 arrivedCars++;
                 log(washer);
             }
@@ -88,7 +60,9 @@ function run() {
         // log(arrivalTimes);
 
         queueSizes.push(washer.queue.size());
-        // console.log(queueSizes);
+
+        let progress = (arrivalTimes/(endTimeInHours*60))*100;
+        $(".progress-bar").width(progress +'%');
 
         if (!infiniteRun) {
             if (arrivalTimes > endTimeInHours * 60) {
@@ -99,7 +73,14 @@ function run() {
                     "Washing": washer.washing,
                     "In Queue": washer.queue.size(),
                     "Max In Queue": maxInQueue,
-                    "Mean In Queue": queueSizes.reduce((total, amount, index, array) => { total += amount; if (index === array.length - 1) { return total / array.length; } else { return total; } }).toFixed(3),
+                    "Mean In Queue": queueSizes.reduce((total, amount, index, array) => {
+                        total += amount;
+                        if (index === array.length - 1) {
+                            return total / array.length;
+                        } else {
+                            return total;
+                        }
+                    }).toFixed(3),
                     "Max Entities in System": maxEntities
                 }
 
@@ -148,7 +129,6 @@ function run() {
                 content += `</table></div></div><hr class='mb-4'>`
                 $("#results").append(content);
 
-                $('#resultArea').show();
                 toggleBtns();
             }
         }
@@ -158,8 +138,6 @@ function run() {
     washer.wash();
     simulations++;
 }
-var arrOP;
-let simulations = 0;
 
 function stop() {
     infiniteRun = false
@@ -214,6 +192,11 @@ $("#sDist").change(function () {
     });
 }).change();
 
-// $(document).ready(function () {
-//     console.log(document.getElementById("duration").value)
-// })
+$(document).ready(function () {
+    // console.log(document.getElementById("duration").value)
+    // let x = 0;
+    // setInterval(function(){
+    //     $(".progress-bar").width(x+'%');
+    //     x++;
+    // }, 500)
+})

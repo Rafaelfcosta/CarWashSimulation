@@ -2,11 +2,33 @@ let infiniteRun = false
 
 let verbose = true;
 let workersAmount = 1;
-
 let speed = 1;
 
+let arrivalTimes = 0;
+let arrivedCars = 0;
+let endTimeInHours = 8;
+let maxInQueue = 0;
+let maxEntities = 0;
+let simulations = 0;
+let end = false;
+
 let mathT;
+let arrOP;
 let servOP;
+
+let arrValues = {
+    "expA": parseInt(document.getElementById("aLimExpo").value),
+    "expB": parseInt(document.getElementById("aMeanExpo").value),
+
+    "triA": parseInt(document.getElementById("aATri").value),
+    "triB": parseInt(document.getElementById("aBTri").value),
+    "triC": parseInt(document.getElementById("aCTri").value),
+
+    "meanA": parseInt(document.getElementById("aMeanNormal").value),
+
+    "uniformA": parseInt(document.getElementById("aAUniform").value),
+    "uniformB": parseInt(document.getElementById("aBUniform").value)
+}
 
 let servValues = {
     "expA": parseInt(document.getElementById("sLimExpo").value),
@@ -22,12 +44,13 @@ let servValues = {
     "uniformB": parseInt(document.getElementById("sBUniform").value)
 }
 
-
-
-
 class Car {
-    constructor() {
+    constructor(id) {
+        this.id = id;
+    }
 
+    getId() {
+        return this.id;
     }
 }
 
@@ -45,16 +68,16 @@ class Washer {
     wash() {
         var that = this
 
-        this.washInterval = setInterval(function() {
+        this.washInterval = setInterval(function () {
             for (let i = 0; i < workersAmount; i++) {
                 if (!that.workers[i].isBusy()) {
                     if (that.queue.size() > 0) {
                         that.workers[i].setBusy(true);
+                        let currentCar = that.queue.first().getId();
+                        that.workers[i].carsWashed.push(currentCar);
                         that.queue.remove();
                         that.washing++;
-                        // let workTime = exponential(10, 15, 1);
                         let workTime = mathT[servOP];
-                        // console.log(servOP , mathT[servOP]);
                         setTimeout(function () {
                             that.workers[i].setBusy(false);
                             that.workers[i].workTime += parseFloat(workTime);
@@ -64,7 +87,7 @@ class Washer {
                     }
                 }
             }
-        }, 1/10);
+        }, 1 / 1000);
     }
 }
 
@@ -72,6 +95,7 @@ class Workerc {
     constructor() {
         this.busy = false;
         this.workTime = 0;
+        this.carsWashed = [];
     }
 
     setBusy(state) {
@@ -112,13 +136,12 @@ Queue.prototype.setLimit = function (value) {
     this.limit = value;
 }
 
-function log(msg){
-    if(verbose){
+function log(msg) {
+    if (verbose) {
         console.log(msg)
     }
 }
 
-
 // $(document).ready(function () {
-    
+
 // })
