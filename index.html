@@ -99,7 +99,7 @@
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-7">
                             <div class="card">
                                 <div class="header">
                                     <h4 class="title">Simulation Parameters</h4>
@@ -303,11 +303,37 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-5">
+                            <div class="card">
+                                <div class="header">
+                                    <h4 class="title">Simulation Results</h4>
+                                </div>
+
+                                <div class="content">
+
+                                    <div class="mb-3">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-primary btn-lg btn-block" id="clearResults"
+                                                    onclick="clearR();">Clear Results</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr class="mb-4">
+                                    <div id="results">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
-            <div class="content" id="resultArea" hidden>
+            <!-- <div class="content" id="resultArea" hidden>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
@@ -336,7 +362,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
             <footer class="footer">
@@ -352,7 +378,8 @@
                         </ul>
                     </nav>
                     <p class="copyright pull-right">
-                        &copy; 2019 <a href="#">R</a>
+                        &copy; 2019 by <a href="https://github.com/Rafaelfcosta" target="_blank"> R </a>~ Ket <i
+                            class="text-danger">&hearts;</i>
                     </p>
                 </div>
             </footer>

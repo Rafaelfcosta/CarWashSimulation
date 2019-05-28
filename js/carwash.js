@@ -5,6 +5,25 @@ let workersAmount = 1;
 
 let speed = 1;
 
+let mathT;
+let servOP;
+
+let servValues = {
+    "expA": parseInt(document.getElementById("sLimExpo").value),
+    "expB": parseInt(document.getElementById("sMeanExpo").value),
+
+    "triA": parseInt(document.getElementById("sATri").value),
+    "triB": parseInt(document.getElementById("sBTri").value),
+    "triC": parseInt(document.getElementById("sCTri").value),
+
+    "meanA": parseInt(document.getElementById("sMeanNormal").value),
+
+    "uniformA": parseInt(document.getElementById("sAUniform").value),
+    "uniformB": parseInt(document.getElementById("sBUniform").value)
+}
+
+
+
 
 class Car {
     constructor() {
@@ -35,6 +54,7 @@ class Washer {
                         that.washing++;
                         // log(`worker[${i}] busy?`, that.workers[i].busy)
                         let workTime = exponential(10, 15, 1);
+                        console.log(servOP , mathT[servOP]);
                         setTimeout(function () {
                             that.workers[i].setBusy(false);
                             that.workers[i].workTime += parseFloat(workTime);
@@ -98,3 +118,8 @@ function log(msg){
         console.log(msg)
     }
 }
+
+
+// $(document).ready(function () {
+    
+// })

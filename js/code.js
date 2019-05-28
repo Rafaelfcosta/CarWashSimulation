@@ -13,12 +13,56 @@ function run() {
     verbose = document.getElementById("verbose").checked
     infiniteRun = document.getElementById("infinite").checked
 
+    let arrValues = {
+        "expA": parseInt(document.getElementById("aLimExpo").value),
+        "expB": parseInt(document.getElementById("aMeanExpo").value),
+
+        "triA": parseInt(document.getElementById("aATri").value),
+        "triB": parseInt(document.getElementById("aBTri").value),
+        "triC": parseInt(document.getElementById("aCTri").value),
+
+        "meanA": parseInt(document.getElementById("aMeanNormal").value),
+
+        "uniformA": parseInt(document.getElementById("aAUniform").value),
+        "uniformB": parseInt(document.getElementById("aBUniform").value)
+    }
+
+    let servValues = {
+        "expA": parseInt(document.getElementById("sLimExpo").value),
+        "expB": parseInt(document.getElementById("sMeanExpo").value),
+
+        "triA": parseInt(document.getElementById("sATri").value),
+        "triB": parseInt(document.getElementById("sBTri").value),
+        "triC": parseInt(document.getElementById("sCTri").value),
+
+        "meanA": parseInt(document.getElementById("sMeanNormal").value),
+
+        "uniformA": parseInt(document.getElementById("sAUniform").value),
+        "uniformB": parseInt(document.getElementById("sBUniform").value)
+    }
 
     let washer = new Washer();
     washer.queue.setLimit(queueLimit);
 
+    let queueSizes = []
+
     function arriveCars() {
-        let time = exponential(2, 15, 1);
+
+        let math = {
+            "expo": exponential(arrValues['expA'], arrValues['expB'], 1),
+            "tri": triangular(arrValues['triA'], arrValues['triB'], arrValues['triC'], 1),
+            "normal": normal(arrValues['meanA'], 1),
+            "uniform": uniform(arrValues['uniformA'], arrValues['uniformB'], 1)
+        }
+
+        mathT = {
+            "expo": exponential(servValues['expA'], servValues['expB'], 1),
+            "tri": triangular(servValues['triA'], servValues['triB'], servValues['triC'], 1),
+            "normal": normal(servValues['meanA'], 1),
+            "uniform": uniform(servValues['uniformA'], servValues['uniformB'], 1)
+        }
+
+        let time = math[arrOP];
 
         let tm = setTimeout(arriveCars, time * speed);
         if (washer.queue.limit === -1) {
@@ -43,6 +87,9 @@ function run() {
         }
         // log(arrivalTimes);
 
+        queueSizes.push(washer.queue.size());
+        // console.log(queueSizes);
+
         if (!infiniteRun) {
             if (arrivalTimes > endTimeInHours * 60) {
                 let res = {
@@ -52,6 +99,7 @@ function run() {
                     "Washing": washer.washing,
                     "In Queue": washer.queue.size(),
                     "Max In Queue": maxInQueue,
+                    "Mean In Queue": queueSizes.reduce((total, amount, index, array) => { total += amount; if (index === array.length - 1) { return total / array.length; } else { return total; } }).toFixed(3),
                     "Max Entities in System": maxEntities
                 }
 
@@ -110,6 +158,7 @@ function run() {
     washer.wash();
     simulations++;
 }
+var arrOP;
 let simulations = 0;
 
 function stop() {
@@ -143,20 +192,22 @@ document.querySelector('input[type="range"]').addEventListener('change', functio
     speed = parseInt(this.value);
 });
 
-$("#aDist").change(function(){
-    $(this).find("option:selected").each(function(){
+$("#aDist").change(function () {
+    $(this).find("option:selected").each(function () {
         var optionValue = $(this).attr("value");
-        if(optionValue){
+        arrOP = $(this).attr("value");
+        if (optionValue) {
             $(".arrbox").not("." + optionValue).hide();
             $("." + optionValue + ".arrbox").show();
         }
     });
 }).change();
 
-$("#sDist").change(function(){
-    $(this).find("option:selected").each(function(){
+$("#sDist").change(function () {
+    $(this).find("option:selected").each(function () {
         var optionValue = $(this).attr("value");
-        if(optionValue){
+        servOP = $(this).attr("value");
+        if (optionValue) {
             $(".servbox").not("." + optionValue).hide();
             $("." + optionValue + ".servbox").show();
         }
