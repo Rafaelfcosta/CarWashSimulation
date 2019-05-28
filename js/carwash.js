@@ -52,15 +52,14 @@ class Washer {
                         that.workers[i].setBusy(true);
                         that.queue.remove();
                         that.washing++;
-                        // log(`worker[${i}] busy?`, that.workers[i].busy)
-                        let workTime = exponential(10, 15, 1);
-                        console.log(servOP , mathT[servOP]);
+                        // let workTime = exponential(10, 15, 1);
+                        let workTime = mathT[servOP];
+                        // console.log(servOP , mathT[servOP]);
                         setTimeout(function () {
                             that.workers[i].setBusy(false);
                             that.workers[i].workTime += parseFloat(workTime);
                             that.washing--;
                             that.washed++;
-                            // log(`worker[${i}] busy?`, that.workers[i].busy)
                         }, workTime * speed);
                     }
                 }
