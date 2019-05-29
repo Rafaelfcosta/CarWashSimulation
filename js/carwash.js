@@ -10,11 +10,12 @@ let endTimeInHours = 8;
 let maxInQueue = 0;
 let maxEntities = 0;
 let simulations = 0;
-let end = false;
 
 let mathT;
 let arrOP;
 let servOP;
+let time;
+let workTime;
 
 let arrValues = {
     "expA": parseInt(document.getElementById("aLimExpo").value),
@@ -47,6 +48,8 @@ let servValues = {
 class Car {
     constructor(id) {
         this.id = id;
+        this.arrival = 0;
+        this.service = 0;
     }
 
     getId() {
@@ -72,12 +75,13 @@ class Washer {
             for (let i = 0; i < workersAmount; i++) {
                 if (!that.workers[i].isBusy()) {
                     if (that.queue.size() > 0) {
+                        workTime = mathT[servOP];
                         that.workers[i].setBusy(true);
-                        let currentCar = that.queue.first().getId();
+                        let currentCar = that.queue.first();
+                        currentCar.service = parseFloat(workTime);
                         that.workers[i].carsWashed.push(currentCar);
                         that.queue.remove();
                         that.washing++;
-                        let workTime = mathT[servOP];
                         setTimeout(function () {
                             that.workers[i].setBusy(false);
                             that.workers[i].workTime += parseFloat(workTime);

@@ -34,16 +34,18 @@ function run() {
             "uniform": uniform(servValues['uniformA'], servValues['uniformB'], 1)
         }
 
-        let time = math[arrOP];
+        time = math[arrOP];
 
         let tm = setTimeout(arriveCars, time * speed);
+        let car = new Car(arrivedCars)
+        car.arrival = parseFloat(time);
         if (washer.queue.limit === -1) {
-            washer.queue.add(new Car(arrivedCars));
+            washer.queue.add(car);
             arrivedCars++;
             log(washer);
         } else {
             if (washer.queue.limit > washer.queue.size()) {
-                washer.queue.add(new Car(arrivedCars));
+                washer.queue.add(car);
                 arrivedCars++;
                 log(washer);
             }
@@ -57,15 +59,26 @@ function run() {
         if (maxEntities < sum) {
             maxEntities = sum;
         }
-        // log(arrivalTimes);
 
         queueSizes.push(washer.queue.size());
 
-        let progress = (arrivalTimes/(endTimeInHours*60))*100;
-        $(".progress-bar").width(progress +'%');
+        let progress = (arrivalTimes / (endTimeInHours * 60)) * 100;
+        $(".progress-bar").width(progress + '%');
 
         if (!infiniteRun) {
             if (arrivalTimes > endTimeInHours * 60) {
+
+                let carsTotalTime = 0;
+                let totalWashedCars = 0;
+
+                washer.workers.forEach(worker => {
+                    worker.carsWashed = getUnique(worker.carsWashed, 'id');
+                    worker.carsWashed.forEach(car => {
+                        carsTotalTime += car.arrival + car.service;
+                    })
+                    totalWashedCars += worker.carsWashed.length;
+                });
+
                 let res = {
                     "Total Simulation time": arrivalTimes.toFixed(3) + ' mins =  (' + (arrivalTimes / 60).toFixed(3) + ') hrs',
                     "ArrivedCars": arrivedCars,
@@ -81,6 +94,7 @@ function run() {
                             return total;
                         }
                     }).toFixed(3),
+                    "Mean Time in System": (carsTotalTime / totalWashedCars).toFixed(3) + ' mins',
                     "Max Entities in System": maxEntities
                 }
 
@@ -93,7 +107,11 @@ function run() {
 
                 let i = 0;
                 washer.workers.forEach(worker => {
-                    console.log(`Worker[${i}] busy time: `, parseFloat(worker.workTime).toFixed(3), ' mins = (', ((worker.workTime / arrivalTimes) * 100).toFixed(3), '%)')
+                    let sum = 0;
+                    getUnique(worker.carsWashed, 'id').forEach(car => {
+                        sum += car.service;
+                    })
+                    console.log(`Worker[${i}] busy time: `, parseFloat(sum).toFixed(3), ' mins = (', ((sum / arrivalTimes) * 100).toFixed(3), '%)')
                     i++;
                 });
 
@@ -120,12 +138,17 @@ function run() {
 
                 let j = 0;
                 washer.workers.forEach(worker => {
+                    let sum = 0;
+                    getUnique(worker.carsWashed, 'id').forEach(car => {
+                        sum += car.service;
+                    })
                     content += `<tr>
                             <td class="tg-0lax">Worker[${j}]</td>
-                            <td class="tg-0lax">${parseFloat(worker.workTime).toFixed(3) + ' mins = (' + ((worker.workTime / arrivalTimes) * 100).toFixed(3) + '%)'}</td>
+                            <td class="tg-0lax">${parseFloat(sum).toFixed(3) + ' mins = (' + ((sum / arrivalTimes) * 100).toFixed(3) + '%)'}</td>
                         </tr>`
                     j++;
                 });
+
                 content += `</table></div></div><hr class='mb-4'>`
                 $("#results").append(content);
 
@@ -167,7 +190,8 @@ document.getElementById("stopBtn").addEventListener("click", function (event) {
 });
 
 document.querySelector('input[type="range"]').addEventListener('change', function (e) {
-    speed = parseInt(this.value);
+    speed = 1001 - parseInt(this.value);
+    console.log(speed)
 });
 
 $("#aDist").change(function () {
@@ -191,6 +215,21 @@ $("#sDist").change(function () {
         }
     });
 }).change();
+
+function getUnique(arr, comp) {
+
+    const unique = arr
+        .map(e => e[comp])
+
+        // store the keys of the unique objects
+        .map((e, i, final) => final.indexOf(e) === i && i)
+
+        // eliminate the dead keys & store unique objects
+        .filter(e => arr[e]).map(e => arr[e]);
+
+    return unique;
+}
+
 
 $(document).ready(function () {
     // console.log(document.getElementById("duration").value)
