@@ -191,7 +191,6 @@ document.getElementById("stopBtn").addEventListener("click", function (event) {
 
 document.querySelector('input[type="range"]').addEventListener('change', function (e) {
     speed = 1001 - parseInt(this.value);
-    console.log(speed)
 });
 
 $("#aDist").change(function () {
