@@ -112,11 +112,19 @@
                                                 <div class="col-md-3">
                                                     <label for="ArrivalDistribuition">Arrival Distribuition</label>
                                                     <select class="form-control" name="" id="aDist">
+                                                        <option value="const">Constant</option>
                                                         <option value="expo">Exponential</option>
                                                         <option value="tri">Triangular</option>
                                                         <option value="normal">Normal</option>
                                                         <option value="uniform">Uniform</option>
                                                     </select>
+                                                </div>
+                                                <div class="const arrbox">
+                                                    <div class="col-md-3">
+                                                        <label for="aa">Value</label>
+                                                        <input class="datepicker form-control" type="number" value="10"
+                                                            id="aConst" />
+                                                    </div>
                                                 </div>
                                                 <div class="expo arrbox">
                                                     <div class="col-md-3">
@@ -175,11 +183,19 @@
                                                 <div class="col-md-3">
                                                     <label for="ServiceDistribuition">Service Distribuition</label>
                                                     <select class="form-control" name="" id="sDist">
+                                                        <option value="const">Constant</option>
                                                         <option value="expo">Exponential</option>
                                                         <option value="tri">Triangular</option>
                                                         <option value="normal">Normal</option>
                                                         <option value="uniform">Uniform</option>
                                                     </select>
+                                                </div>
+                                                <div class="const servbox">
+                                                    <div class="col-md-3">
+                                                        <label for="aa">Value</label>
+                                                        <input class="datepicker form-control" type="number" value="5"
+                                                            id="sConst" />
+                                                    </div>
                                                 </div>
                                                 <div class="expo servbox">
                                                     <div class="col-md-3">
@@ -235,12 +251,12 @@
                                         <div class="details mb-3">
                                             <h5>Global Variables</h5>
                                             <div class="row">
-                                                <div class="col-md-4 mb-3">
+                                                <div class="col-md-12 mb-3">
                                                     <label for="sduration">Duration (hours)</label>
                                                     <input class="datepicker form-control" type="number" value="8"
                                                         id="duration" />
                                                 </div>
-                                                <div class="col-md-4 mb-3">
+                                                <!-- <div class="col-md-4 mb-3">
                                                     <label for="workersAmout">Workers Quantity</label>
                                                     <input class="datepicker form-control" type="number" value="1"
                                                         id="workersQt" />
@@ -249,7 +265,7 @@
                                                     <label for="queueSize">Queue Limit (-1 to infinite)</label>
                                                     <input class="datepicker form-control" type="number" value="-1"
                                                         id="queueLimit" />
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
 
@@ -261,11 +277,11 @@
                                                     <input class="form-check-input" type="checkbox" value="" checked
                                                         id="verbose">
                                                 </div>
-                                                <div class="col-md-3">
+                                                <!-- <div class="col-md-3">
                                                     <label for="infiniterun">Run Infinitely</label>
                                                     <input class="form-check-input" type="checkbox" value=""
                                                         id="infinite">
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
 
@@ -288,14 +304,14 @@
 
                                         <div class="mb-3">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <button class="btn btn-primary btn-lg btn-block" id="runBtn"
                                                         onclick="run();">Run</button>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <!-- <div class="col-md-6">
                                                     <button class="btn btn-primary btn-lg btn-block" id="stopBtn"
                                                         disabled onclick="stop();">Stop</button>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-md-12">
                                                     <div class="progress">
                                                         <div class="progress-bar progress-bar-striped active"
@@ -341,38 +357,6 @@
                 </div>
             </div>
 
-            <!-- <div class="content" id="resultArea" hidden>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="header">
-                                    <h4 class="title">Simulation Results</h4>
-                                </div>
-
-                                <div class="content">
-
-                                    <div class="mb-3">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <button class="btn btn-primary btn-lg btn-block" id="clearResults"
-                                                    onclick="clearR();">Clear Results</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <hr class="mb-4">
-                                    <div id="results">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
-
             <footer class="footer">
                 <div class="container-fluid">
                     <nav class="pull-left">
@@ -386,8 +370,7 @@
                         </ul>
                     </nav>
                     <p class="copyright pull-right">
-                        &copy; 2019 by <a href="https://github.com/Rafaelfcosta" target="_blank"> R </a>~ Ket <i
-                            class="text-danger">&hearts;</i>
+                        &copy; 2019 by <a href="https://github.com/Rafaelfcosta" target="_blank"> R </a>
                     </p>
                 </div>
             </footer>
@@ -405,16 +388,7 @@
 <!--  Checkbox, Radio & Switch Plugins -->
 <script src="assets/js/bootstrap-checkbox-radio-switch.js"></script>
 
-<!--  Charts Plugin -->
-<script src="assets/js/chartist.min.js"></script>
-
-<!--  Notifications Plugin    -->
-<script src="assets/js/bootstrap-notify.js"></script>
-
 <!--  My Scripts    -->
-<script src="js/carwash.js"></script>
-<script src="js/code.js"></script>
-<script src="js/math.js"></script>
-
+<script src="js/main.js"></script>
 
 </html>
